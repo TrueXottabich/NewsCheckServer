@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    {% if title == "Введите новый пароль"%}
+        <h1>Восстановление пароля</h1>
+        <h6>Забыли пароль? Введите свой адрес электронной почты ниже, и мы вышлем вам инструкцию, как установить новый пароль.</h6><br>
+        <form method="post">
+            {% csrf_token %}
+            <h5>Новый пароль</h5>
+            <input type="password" name="new_password1" placeholder="Введите пароль" class="form-control"><br>
+            <h5>Повторение нового пароля</h5>
+            <input type="password" name="new_password2" placeholder="Введите пароль" class="form-control"><br>
+
+            <button type="submit" class="btn btn-primary">Отправить</button><br>
+
+            {{form.errors}}
+        </form>
+    {% endif %}
+
+    {% if title == "Ошибка восстановления пароля"%}
+        <h1>Ошибка восстановления пароля</h1>
+        <br>
+        <h6>Неверная ссылка для восстановления пароля. Возможно, ей уже воспользовались. Пожалуйста, попробуйте восстановить пароль еще раз.</h6>
+        <br>
+        Хотите попробовать сбросить пароль?<a href="{% url 'reset_password' %}" class="ml-2">Сбросить пароль</a>
+    {% endif %}
+{% endblock %}

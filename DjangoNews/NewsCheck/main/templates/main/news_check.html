@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Проверка новости
+{% endblock %}
+
+{% block content %}
+    <h1>Проверить новость</h1>
+    <form method="post">
+        {% csrf_token %}
+        <h4>{{ answer }}</h4>
+        {{ form.method.0 }}
+        {{ form.method.1 }}<br>
+        {{ form.model }}<br>
+        {% if role == "user" %}
+            Для того, чтобы добавлять собственные модели, необходимо запросить особые права:<a href="{% url 'ask_rights' %}" class="ml-2">заполнить форму</a><br>
+        {% endif %}
+        {% if role == "none" %}
+            Для того, чтобы просматривать историю проверок, необходимо авторизоваться:<a href="{% url 'login' %}" class="ml-2">войти в аккаунт</a><br>
+        {% endif %}
+        <br>
+        {{ form.title }}<br>
+        {{ form.text }}<br>
+
+        <button type="submit" class="bin btn-success">Проверить</button><br>
+        {{ error }}<br>
+    </form>
+{% endblock %}

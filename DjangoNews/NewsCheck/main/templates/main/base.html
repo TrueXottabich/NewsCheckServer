@@ -1,0 +1,41 @@
+<!doctype html>
+{% load auth_extras %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <a class="my-0 mr-md-auto font-weight-normal" href="{% url 'home' %}">NewsCheck</a>
+        <nav class="my-2 my-md-0 mr-md-3">
+            <a class="p-2 text-dark" href="{% url 'news_check' %}">Проверка новости</a>
+
+            {% if request.user.is_authenticated == False%}
+            <a class="p-2 text-dark" href="{% url 'login' %}">Вход</a>
+            {% endif %}
+
+            {% if request.user|has_group:"authorized_user" %}
+            <a class="p-2 text-dark" href="{% url 'history' %}">История</a>
+            <a class="p-2 text-dark" href="{% url 'user' %}">{{request.user}}</a>
+            <a class="p-2 text-dark" href="{% url 'logout' %}">Выход</a>
+            {% endif %}
+
+            {% if request.user|has_group:"admin" %}
+            <a class="p-2 text-dark" href="{% url 'history' %}">История</a>
+            <a class="p-2 text-dark" href="{% url 'add_model' %}">Добавить модель</a>
+            <a class="p-2 text-dark" href="{% url 'user' %}">{{request.user}}</a>
+            <a class="p-2 text-dark" href="{% url 'logout' %}">Выйти</a>
+            {% endif %}
+        </nav>
+    </div>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

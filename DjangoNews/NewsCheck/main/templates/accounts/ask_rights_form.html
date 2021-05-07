@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Запрос особых прав
+{% endblock %}
+
+{% block content %}
+    <h1>Запрос особых прав</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% if need == False %}
+            <h5>Ваш запрос успешно отправлен. Дождитесь ответа.</h5>
+        {% else %}
+            <h5>Объясните, пожалуйста, зачем Вам права на добавление моделей для проверки новостей:</h5>
+            {{ form.text }}<br>
+
+            <h6>{{ message }}</h6>
+
+            <button type="submit" class="btn btn-primary">Отправить</button><br>
+        {% endif %}
+    </form>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+    <h1>Добавление модели</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.title }}<br>
+        <span>Модель в формате .pickle</span><br>
+        {{ form.file_1 }}<br>
+        <br>
+        <span>Векторное представление слов в формате .pkl</span><br>
+        {{ form.file_2 }}<br>
+        <br>
+
+        <button type="submit" class="bin btn-success">Загрузить</button><br>
+        {{ error }}<br>
+    </form>
+{% endblock %}

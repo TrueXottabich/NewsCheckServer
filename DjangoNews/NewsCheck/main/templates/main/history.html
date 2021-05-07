@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+История проверок
+{% endblock %}
+
+{% block content %}
+    <h1>История проверок новостей</h1>
+    <hr>
+    {% if news %}
+        {% for i in news %}
+            <h4>Название: {{ i.title }}</h4>
+            <p>Модель: {{ i.model }}</p>
+            <p>Вердикт модели: {{ i.verdict }}</p>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <h4>У вас нет проверок</h4>
+    {% endif %}
+{% endblock %}

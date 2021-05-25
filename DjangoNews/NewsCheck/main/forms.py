@@ -1,14 +1,16 @@
-from .models import Check, NewsModel, AskRightsModel
+# Файл содержит определение форм
+from .models import CheckModel, NewsModel, AskRightsModel
 from django.forms import ModelForm, TextInput, Textarea, RadioSelect, EmailInput, PasswordInput
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 
+# Форма истории проверки новостей
 class NewsModelForm(ModelForm):
     class Meta:
         model = NewsModel
-        fields = {"title", "file_1", "file_2"}
+        fields = {"title", "file_model", "file_vector"}
         widgets = {
             "title": TextInput(attrs={
                 'placeholder': "Введите название модели",
@@ -17,6 +19,7 @@ class NewsModelForm(ModelForm):
         }
 
 
+# Форма пользователя
 class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
@@ -46,6 +49,7 @@ class CreateUserForm(UserCreationForm):
         self.fields['email'].required = True
 
 
+# Форма профиля пользователя
 class UpdateProfile(forms.ModelForm):
     class Meta:
         model = User
@@ -72,9 +76,10 @@ class UpdateProfile(forms.ModelForm):
         }
 
 
+# Форма проверки новости
 class CheckForm(ModelForm):
     class Meta:
-        model = Check
+        model = CheckModel
         fields = {"method", "model", "title", "text"}
         widgets = {
             "method": RadioSelect(attrs={
@@ -92,12 +97,14 @@ class CheckForm(ModelForm):
         }
 
 
+# Форма добавления модели
 class PostForm(ModelForm):
     class Meta:
         model = NewsModel
-        fields = ['title', 'file_1', 'file_2']
+        fields = ['title', 'file_model', 'file_vector']
 
 
+# Форма запроса прав администратора
 class AskRightsForm(ModelForm):
     class Meta:
         model = AskRightsModel

@@ -1,8 +1,9 @@
+# Файл содержит определение представлений
 from django.shortcuts import redirect
 
 from .decorators import unauthenticated_user, allowed_users
-from .news_validation import check_text
-from .models import Check, NewsModel, AskRightsModel
+from NewsCheck.main.news_validation.news_validation import check_text, check_link
+from .models import CheckModel, NewsModel, AskRightsModel
 from .forms import CheckForm, CreateUserForm, NewsModelForm, UpdateProfile, AskRightsForm
 
 from django.contrib import messages
@@ -23,7 +24,7 @@ def index(request):
 @login_required(login_url='login')
 def history(request):
     context = {
-        'news': Check.objects.filter(user=request.user)
+        'news': CheckModel.objects.filter(user=request.user)
     }
     return render(request, 'main/history.html', context)
 
@@ -31,10 +32,21 @@ def history(request):
 @unauthenticated_user
 def registerPage(request):
     form = CreateUserForm()
+    new_code = ''
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
+
+            user = form.save(commit=False)
+
+            # Отправка кода для подтверждения адреса электронной почты
+            #code = str(random.randint(10000, 99999))
+            #title = "Код подтверждения адреса электронной почты в NewsCheck"
+            #data = "Ваш код для подтверждения: " + code
+            #send_mail(title, data, "Yasoob", [str(user.email)], fail_silently=False)
+
+            user.save()
+
             username = form.cleaned_data.get('username')
 
             group = Group.objects.get(name='authorized_user')
@@ -43,12 +55,26 @@ def registerPage(request):
             messages.success(request, 'Аккаунт был создан для ' + username)
             return redirect('login')
 
-    context = {'form': form}
+    context = {
+        'form': form,
+        'new_code': new_code
+    }
+
     return render(request, 'accounts/register.html', context)
 
+@unauthenticated_user
+def confirmEmail(request, code=''):
+    message = ''
+
+    context = {
+        'message': message,
+        'code': code
+    }
+    return render(request, 'accounts/confirm_email.html', context)
 
 @unauthenticated_user
 def loginPage(request):
+    message = ''
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -58,9 +84,11 @@ def loginPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.info(request, "Некорректные имя пользователя или пароль")
+            message = "Некорректные имя пользователя или пароль"
 
-    context = {}
+    context = {
+        'message': message
+    }
     return render(request, 'accounts/login.html', context)
 
 
@@ -89,8 +117,13 @@ def news_check(request):
         form = CheckForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.user = request.user
-            answer = check_text(form.cleaned_data.get("model"), form.cleaned_data.get("text"))
+            if request.user.is_authenticated:
+                obj.user = request.user
+
+            if obj.method == '0':
+                answer = check_text(form.cleaned_data.get("model"), form.cleaned_data.get("text"))
+            else:
+                answer = check_link(form.cleaned_data.get("model"), form.cleaned_data.get("text"))
             obj.verdict = answer
             obj.save()
         else:
@@ -121,7 +154,13 @@ def add_model(request):
     if request.method == 'POST':
         form = NewsModelForm(request.POST)
         if form.is_valid():
-            form.save()
+            file_model = form.cleaned_data.get('file_model')
+            file_vector = form.cleaned_data.get('file_vector')
+            if file_model.name.endswith('.pickle') and file_vector.name.endswith('.pkl'):
+                print(file_vector.name.endswith('.pkl'))
+                form.save()
+            else:
+                error = 'Не верное расширение у файлов'
         else:
             error = 'Форма не верна'
 

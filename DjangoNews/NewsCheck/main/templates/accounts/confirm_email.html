@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Регистрация
+{% endblock %}
+
+{% block content %}
+    <h1>Подтверждение адреса электронной почты</h1>
+    <h1>{{code}}</h1>
+
+    <h6> На вашу почту было отправлено письмо с кодом подтверждения.</h6>
+    <h6> Для завершения регистрации введите код в поле ниже:</h6>
+    <input type="text" name="new_code" placeholder="Введите код подтверждения" class="form-control"><br>
+
+{% endblock %}

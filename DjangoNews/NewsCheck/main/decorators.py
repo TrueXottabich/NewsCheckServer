@@ -1,7 +1,9 @@
+# Файл содержит декораторы проверки прав пользователей
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
 
+# Проверка на то, что пользователь не авторизован
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -12,6 +14,7 @@ def unauthenticated_user(view_func):
     return wrapper_func
 
 
+# Проверка на то, что пользователь обладает указанной ролью
 def allowed_users(allowed_roles=[]):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):

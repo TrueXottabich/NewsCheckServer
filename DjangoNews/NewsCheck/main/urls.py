@@ -1,3 +1,4 @@
+# Файл содержит определение ссылок приложения
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import views as auth_views
@@ -10,6 +11,7 @@ urlpatterns = [
     path('register', views.registerPage, name='register'),
     path('login', views.loginPage, name='login'),
     path('logout', views.logoutUser, name='logout'),
+    path('confirm_email', views.confirmEmail, name='confirm_email'),
     path('user', views.update_profile, name='user'),
 
     path('news_check', views.news_check, name='news_check'),
@@ -30,5 +32,5 @@ urlpatterns = [
          name="password_reset_complete"),
 
     # Запрос прав на добавление моделей
-    path('ask_rights/', views.ask_rights, name='ask_rights')
+    path('ask_rights', views.ask_rights, name='ask_rights')
 ]

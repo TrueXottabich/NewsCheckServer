@@ -1,6 +1,7 @@
+# Файл содержит регистрацию моделей для административной панели
 from django.contrib import admin
-from .models import Check, NewsModel, AskRightsModel
+from .models import CheckModel, NewsModel, AskRightsModel
 
-admin.site.register(Check)
+admin.site.register(CheckModel)
 admin.site.register(NewsModel)
 admin.site.register(AskRightsModel)

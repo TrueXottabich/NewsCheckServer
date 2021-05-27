@@ -6,17 +6,26 @@ from .decorators import allowed_users
 from . import views  # Из текущей директории импортируем файл views
 
 urlpatterns = [
-    path('', views.index, name='home'),  # При переходе на главную страницу вызываем приложение main
+    # Главная страница
+    path('', views.index, name='home'),
 
+    # Регистрация
     path('register', views.registerPage, name='register'),
+    # Авторизация
     path('login', views.loginPage, name='login'),
+    # Выход из аккаунта
     path('logout', views.logoutUser, name='logout'),
-    path('confirm_email', views.confirmEmail, name='confirm_email'),
+    # Профиль пользователя
     path('user', views.update_profile, name='user'),
 
+    # Проверка новости
     path('news_check', views.news_check, name='news_check'),
+    # История проверок
     path('history', views.history, name='history'),
+    # Добавление модели
     path('add_model', login_required(login_url='login')(allowed_users(allowed_roles=['admin'])(views.AddModel.as_view())), name='add_model'),
+    # Запрос прав на добавление моделей
+    path('ask_rights', views.ask_rights, name='ask_rights'),
 
     # Форма для ввода адреса электронной почты во время сброса пароля
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="accounts/reset_password.html"),
@@ -31,6 +40,6 @@ urlpatterns = [
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name="accounts/reset_password_complete.html"),
          name="password_reset_complete"),
 
-    # Запрос прав на добавление моделей
-    path('ask_rights', views.ask_rights, name='ask_rights')
+    # Подтверждение адреса электронной почты
+    # path('confirm_email', views.confirmEmail, name='confirm_email'),
 ]

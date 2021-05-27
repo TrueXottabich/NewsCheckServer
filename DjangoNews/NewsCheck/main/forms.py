@@ -90,7 +90,7 @@ class CheckForm(ModelForm):
                 'class': "form-control"
             }),
             "text": Textarea(attrs={
-                'placeholder': "Введите новость",
+                'placeholder': "Введите новость (текст или ссылку)",
                 'class': "form-control",
                 'id': "id_text"
             }),

@@ -12,6 +12,7 @@
         {{ form.method.0 }}
         {{ form.method.1 }}<br>
         {{ form.model }}<br>
+
         {% if role == "user" %}
             Для того, чтобы добавлять собственные модели, необходимо запросить особые права:<a href="{% url 'ask_rights' %}" class="ml-2">заполнить форму</a><br>
         {% endif %}
@@ -19,10 +20,12 @@
             Для того, чтобы просматривать историю проверок, необходимо авторизоваться:<a href="{% url 'login' %}" class="ml-2">войти в аккаунт</a><br>
         {% endif %}
         <br>
+
         {{ form.title }}<br>
         {{ form.text }}<br>
 
         <button type="submit" class="btn btn-primary">Проверить</button><br>
-        {{ error }}<br>
+
+        <h6>{{ error }}</h6><br>
     </form>
 {% endblock %}

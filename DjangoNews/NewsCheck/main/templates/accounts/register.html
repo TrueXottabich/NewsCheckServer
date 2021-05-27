@@ -19,15 +19,8 @@
 
         <button type="submit" class="btn btn-primary">Зарегистрироваться</button><br>
 
-        {{form.errors}}
+        <h6>{{form.errors}}</h6>
 
         Уже есть аккаунт? <a href="{% url 'login' %}" class="ml-2">Войти</a>
     </form>
-
-    {% if flag_show_code %}
-        <br><h6> На вашу почту было отправлено письмо с кодом подтверждения.</h6>
-        <h6> Для завершения регистрации введите код в поле ниже:</h6>
-        <input type="text" name="new_code" placeholder="Введите код подтверждения" class="form-control"><br>
-    {% endif %}
-
 {% endblock %}
